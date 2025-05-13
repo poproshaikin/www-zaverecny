@@ -15,55 +15,57 @@ datasource db {
 }
 
 model User {
-  id          String         @id @default(uuid())
-  name        String?
-  surname     String?
-  email       String?        @unique
-  password    String
+  id       String  @id @default(uuid())
+  name     String?
+  surname  String?
+  email    String? @unique
+  password String
 
-  Blog        Blog[]
-  Like        Like[]
-  Dislike     Dislike[]
-  Review      Review[]
+  Blog    Blog[]
+  Like    Like[]
+  Dislike Dislike[]
+  Review  Review[]
 }
 
 model Blog {
-  id          String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  Like Like[]
+  title String
+
+  Like    Like[]
   Dislike Dislike[]
-  Review Review[]
+  Review  Review[]
 }
 
 model Like {
-  id          String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  blogId      String
-  blog        Blog           @relation(fields: [blogId], references: [id])
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id])
 }
 
 model Dislike {
-  id          String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  blogId      String
-  blog        Blog           @relation(fields: [blogId], references: [id])
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id])
 }
 
 model Review {
-  id          String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  blogId      String
-  blog        Blog           @relation(fields: [blogId], references: [id])
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id])
 }
