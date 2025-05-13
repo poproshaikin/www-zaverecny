@@ -1,15 +1,18 @@
 'use client';
 
 import {ReactNode} from "react";
-import {ChakraProvider} from "@chakra-ui/react";
-import {customTheme} from "@/theme";
 import "@/theme/global.css"
+import TopNavBar from "@/components/nav/TopNavBar";
+import Provider from "@/components/tech/Provider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html>
         <body>
-        <ChakraProvider value={customTheme}>{children}</ChakraProvider>
+        <Provider>
+            <TopNavBar />
+            {children}
+        </Provider>
         </body>
         </html>
     )

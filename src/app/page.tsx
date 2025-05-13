@@ -6,10 +6,17 @@ export default function Page() {
 
     return (
         <Box>
-            <Heading fontFamily='Raleway'>Ladnding page w</Heading>
-            <Flex direction="column">
-                <Text fontSize='xl'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <Flex
+                justifyContent="center"
+                alignItems="center"
+                height="100vh"
+                flexDirection="column"
+            >
+                <Heading as="h1" size="2xl" mb={4}>
+                    Welcome to the App!
+                </Heading>
+                <Text fontSize="xl">
+                    This is a simple example of a Chakra UI page.
                 </Text>
             </Flex>
         </Box>
