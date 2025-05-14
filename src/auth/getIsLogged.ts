@@ -1,0 +1,1 @@
+export default () => typeof sessionStorage.getItem('next-auth.session-token') === 'string';

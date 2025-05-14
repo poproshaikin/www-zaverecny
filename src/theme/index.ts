@@ -4,7 +4,7 @@ import {
     defineTextStyles,
     defineTokens,
     defaultConfig,
-    ChakraProvider,
+    ChakraProvider, mergeConfigs,
 } from "@chakra-ui/react";
 import { Raleway } from "next/font/google";
 
@@ -31,7 +31,13 @@ const colors = defineTokens.colors({
         value: 'linear-gradient(to right, {colors.red.200}, {colors.blue.200})',
     },
     primaryButton: {
-        value: 'linear-gradient(to right, {colors.red.50}, {colors.blue.50})',
+        value: 'rgba(255,255,255,0.05)',
+    },
+    secondary: {
+        value: 'linear-gradient(to right bottom, {colors.white}, {colors.orange.100})'
+    },
+    transparent: {
+        '1': { value: 'rgba(255, 255, 255, 0.1)' }
     }
 })
 
@@ -47,4 +53,4 @@ const themeConfig = defineConfig({
     },
 });
 
-export const customTheme = createSystem(defaultConfig, themeConfig);
+export const customTheme = createSystem(mergeConfigs(defaultConfig, themeConfig));

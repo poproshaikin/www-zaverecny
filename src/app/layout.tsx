@@ -2,7 +2,7 @@
 
 import {ReactNode} from "react";
 import "@/theme/global.css"
-import TopNavBar from "@/components/nav/TopNavBar";
+import Navbar from "@/components/nav/Navbar";
 import Provider from "@/components/tech/Provider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -10,7 +10,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <html>
         <body>
         <Provider>
-            <TopNavBar />
             {children}
         </Provider>
         </body>

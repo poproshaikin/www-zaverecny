@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -16,56 +15,17 @@ datasource db {
 
 model User {
   id       String  @id @default(uuid())
-  name     String?
-  surname  String?
   email    String? @unique
+  username String  @unique @default(uuid())
   password String
 
-  Blog    Blog[]
-  Like    Like[]
-  Dislike Dislike[]
-  Review  Review[]
+  VirtualDb VirtualDb[]
 }
 
-model Blog {
-  id String @id @default(uuid())
-
-  userId String
+model VirtualDb {
+  id     String @id @default(uuid())
+  name   String @unique @default(uuid())
+  schema String
   user   User   @relation(fields: [userId], references: [id])
-
-  title String
-
-  Like    Like[]
-  Dislike Dislike[]
-  Review  Review[]
-}
-
-model Like {
-  id String @id @default(uuid())
-
   userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  blogId String
-  blog   Blog   @relation(fields: [blogId], references: [id])
-}
-
-model Dislike {
-  id String @id @default(uuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  blogId String
-  blog   Blog   @relation(fields: [blogId], references: [id])
-}
-
-model Review {
-  id String @id @default(uuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  blogId String
-  blog   Blog   @relation(fields: [blogId], references: [id])
 }
