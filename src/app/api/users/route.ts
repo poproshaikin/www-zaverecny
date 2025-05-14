@@ -1,9 +1,9 @@
-import {NextRequest, NextResponse} from "next/server";
-import prisma from "@/db/prisma";
-import {User} from "@/db/types/user";
+import { NextRequest, NextResponse } from 'next/server'
+import prisma from '@/db/prisma'
+import { User } from '@/types/db/user'
 
 export async function GET() {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany()
 
-    return NextResponse.json(users);
+    return NextResponse.json(users)
 }

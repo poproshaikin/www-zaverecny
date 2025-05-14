@@ -17,23 +17,34 @@
     "@prisma/client": "^6.7.0",
     "@tanstack/react-query": "^5.76.0",
     "bcrypt": "^6.0.0",
+    "bcrypt-ts": "^7.0.0",
     "framer-motion": "^12.11.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.2",
-    "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.3",
     "react-icons": "^5.5.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "prettier": "^3.5.3",
     "prisma": "^6.7.0",
     "typescript": "^5"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "all",
+    "tabWidth": 4,
+    "printWidth": 80
   }
 }

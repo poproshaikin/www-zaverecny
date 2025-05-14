@@ -1,49 +1,71 @@
-import {  Flex, Heading} from "@chakra-ui/react";
-import React from "react";
-import Button from "../../components/general/Button"
-import getIsLogged from "@/auth/getIsLogged";
-import {signIn, useSession} from "next-auth/react";
+'use client'
 
+import { Flex, Heading, Icon } from '@chakra-ui/react'
+import React from 'react'
+import Button from '../../components/general/Button'
+import { useIsLoggedIn } from '@/helpers/auth/utils'
+import { useRouter } from 'next/navigation'
 
-export default function Navbar() {
-    const isLogged = getIsLogged();
-
-    const { data: session } = useSession();
+export default function Navbar({
+    withHome = false,
+    withDashboard = false,
+    withProfile = false,
+}: {
+    withHome?: boolean
+    withDashboard?: boolean
+    withProfile?: boolean
+}) {
+    const isLogged = useIsLoggedIn()
+    const router = useRouter()
 
     return (
         <Flex
-            direction='row'
-            width='full' height={{ base: '30px', md: '60px' }}
-            alignItems='center'
-            bg='primary'
-            justifyContent='space-around'
-            position='fixed'
-            color='gray.900'
+            direction="row"
+            width="100vw"
+            height={{ base: '30px', md: '60px' }}
+            alignItems="center"
+            bg="primary"
+            justifyContent="space-around"
+            position="fixed"
+            color="gray.900"
         >
-            <Heading fontSize={20} fontWeight='bold'>
-                Hello, World!
+            <Heading fontSize={25} fontWeight="bold">
+                DeltaCloud
             </Heading>
-            <Flex gap={4} flexDirection='row'>
-                {isLogged ?
+            <Flex gap={4} flexDirection="row">
+                {withHome && (
+                    <Button
+                        onClick={() => {
+                            router.push('/')
+                        }}
+                    >
+                        Home
+                    </Button>
+                )}
+                {isLogged ? (
                     <>
-                        <Button>
-                            Dashboard
-                        </Button>
-                        <Button>
-                            Profile
-                        </Button>
+                        {withDashboard && (
+                            <Button onClick={() => router.push('/dashboard')}>
+                                Dashboard
+                            </Button>
+                        )}
+                        {withProfile && (
+                            <Button onClick={() => router.push('/profile')}>
+                                Profile
+                            </Button>
+                        )}
                     </>
-                :
+                ) : (
                     <>
-                        <Button onClick={() => signIn()}>
+                        <Button onClick={() => router.push('/log-in')}>
                             Log In
                         </Button>
-                        <Button>
-                            Sign Up
+                        <Button onClick={() => router.push('/register')}>
+                            Register
                         </Button>
                     </>
-                }
+                )}
             </Flex>
         </Flex>
-    );
+    )
 }
