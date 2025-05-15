@@ -12,9 +12,6 @@ services:
       - "12121:3000"
     depends_on:
       - db
-    volumes:
-      - /home/stasik/volumes/zaverecny/next:/app
-      - /home/stasik/volumes/zaverecny/next/node_modules:/app/node_modules
     command: npm run dev
 
   db:
