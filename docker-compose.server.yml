@@ -29,10 +29,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pg:/home/stasik/volumes/postgresql/data
-
-volumes:
-  pg:
+      - /home/stasik/volumes/zaverecny/pg:/var/lib/postgresql/data
 
 networks:
   app:
