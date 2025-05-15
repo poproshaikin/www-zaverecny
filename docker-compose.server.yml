@@ -13,8 +13,8 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/app
-      - /app/node_modules
+      - /home/stasik/volumes/zaverecny/next:/app
+      - /home/stasik/volumes/zaverecny/next/node_modules:/app/node_modules
     command: npm run dev
 
   db:
