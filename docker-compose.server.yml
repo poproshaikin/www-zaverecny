@@ -29,7 +29,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pg:/var/lib/postgresql/data
+      - pg:/home/stasik/volumes/postgresql/data
 
 volumes:
   pg:
