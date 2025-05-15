@@ -10,4 +10,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 12121
-CMD ["npm", "start"]
+CMD ["npm", "run", "build"]
+CMD ["npm", "run", "start"]

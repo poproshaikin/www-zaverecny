@@ -13,11 +13,8 @@ import {
 import Navbar from '@/components/nav/Navbar'
 import { useGetDatabases } from '@/helpers/databases'
 import Card from '@/components/general/Card'
-import { FiDatabase } from 'react-icons/fi'
 import { TbDatabaseOff } from 'react-icons/tb'
 import Button from '@/components/general/Button'
-import { CiSquarePlus } from 'react-icons/ci'
-import { FaPlus } from 'react-icons/fa'
 import { GoPlus } from 'react-icons/go'
 
 export default function Dashboard() {
@@ -56,10 +53,14 @@ export default function Dashboard() {
             <Flex justifyContent="center" height="100vh" alignItems="center">
                 <Flex h="50vh" w="50vw" mr="10vw" direction="column">
                     <Box borderBottom="1px solid black" w="20vw" mb={8} p={4}>
-                        <Heading fontSize="3xl" fontWeight="bold" mb={4}>
+                        <Heading
+                            fontSize="3xl"
+                            fontWeight="bold"
+                            w="max-content"
+                        >
                             Your databases
                         </Heading>
-                        <Button w="full">
+                        <Button h="3.5vh" w="full" mt={8}>
                             <Icon as={GoPlus} boxSize={6} color="green.400" />
                             New
                         </Button>
