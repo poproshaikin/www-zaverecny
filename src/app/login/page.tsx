@@ -1,46 +1,45 @@
-'use client'
+'use client';
 
-import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react'
-import Card from '@/components/general/Card'
-import InputField from '@/components/general/InputField'
-import { UserLogin } from '@/types/zod-schemas'
-import { useForm } from 'react-hook-form'
-import Button from '@/components/general/Button'
-import { useRouter } from 'next/navigation'
-import ReturnButton from '@/components/nav/ReturnButton'
-import { MdWavingHand } from 'react-icons/md'
-import { useLogin } from '@/helpers/auth'
-import { saveToken } from '@/helpers/auth/utils'
-import { toaster } from '@/components/utils/toaster'
-import { useEffect } from 'react'
+import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import Card from '@/components/general/Card';
+import InputField from '@/components/general/InputField';
+import { UserLogin } from '@/types/zod-schemas';
+import { useForm } from 'react-hook-form';
+import Button from '@/components/general/Button';
+import { useRouter } from 'next/navigation';
+import ReturnButton from '@/components/nav/ReturnButton';
+import { MdWavingHand } from 'react-icons/md';
+import { useLogin } from '@/helpers/auth';
+import { saveToken } from '@/helpers/auth/utils';
+import { toaster } from '@/components/utils/toaster';
+import { useEffect } from 'react';
 
 export default function LogInPage() {
-    const { register, handleSubmit } = useForm<UserLogin>()
+    const { register, handleSubmit } = useForm<UserLogin>();
 
-    const router = useRouter()
-    const { mutateAsync } = useLogin()
+    const router = useRouter();
+    const { mutateAsync } = useLogin();
 
     const onSubmit = async (data: UserLogin) => {
         await mutateAsync(data, {
             onSuccess: async (data) => {
-                console.log('received jwt', data)
-                saveToken(data)
+                saveToken(data);
                 toaster.create({
                     type: 'success',
                     title: 'Login successful',
                     description: 'You have successfully logged in.',
-                })
-                router.push('/dashboard')
+                });
+                router.push('/dashboard');
             },
             onError: async (error) => {
                 toaster.create({
                     type: 'error',
                     title: 'Login failed',
                     description: 'Invalid username or password.',
-                })
+                });
             },
-        })
-    }
+        });
+    };
 
     return (
         <Box>
@@ -112,5 +111,5 @@ export default function LogInPage() {
                 </Card>
             </Flex>
         </Box>
-    )
+    );
 }

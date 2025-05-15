@@ -1,45 +1,29 @@
-'use client'
+'use client';
 
-import { Flex, Heading, Icon, Text } from '@chakra-ui/react'
-import Button from '../components/general/Button'
-import Card from '@/components/general/Card'
-import { FaBoltLightning } from 'react-icons/fa6'
-import Navbar from '@/components/nav/Navbar'
-import { useRouter } from 'next/navigation'
-import { FaDatabase, FaTools } from 'react-icons/fa'
-import { useGetTokenFromStorage, useIsLoggedIn } from '@/helpers/auth/utils'
-import { useValidateToken } from '@/helpers/auth'
-import { useEffect } from 'react'
-import { successToast } from '@/components/utils/toast'
+import { Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import Button from '../components/general/Button';
+import Card from '@/components/general/Card';
+import { FaBoltLightning } from 'react-icons/fa6';
+import Navbar from '@/components/nav/Navbar';
+import { useRouter } from 'next/navigation';
+import { FaDatabase, FaTools } from 'react-icons/fa';
+import { useEnsureToken } from '@/helpers/auth';
+import Loading from '@/components/general/Loading';
 
 export default function Page() {
-    const router = useRouter()
-    const isLoggedIn = useIsLoggedIn()
-    const validation = useValidateToken()
+    const router = useRouter();
+    const { isLogged, isPending } = useEnsureToken();
+    // const isLogged = true;
+    // const isPending = false;
 
-    useEffect(() => {
-        const token = useGetTokenFromStorage()
-        if (!token) {
-            return
-        }
-        if (validation.isLoading) {
-            return
-        }
-        if (validation.isError) {
-            sessionStorage.removeItem('app-auth.jwt-token')
-            return
-        }
-    }, [])
+    if (isPending) {
+        return <Loading loadingButtons />;
+    }
 
     return (
         <div>
-            <Navbar withDashboard withProfile />
-            <Flex
-                alignItems="center"
-                height="100vh"
-                flexDirection="column"
-                bg="primary"
-            >
+            <Navbar withProfile withDashboard />
+            <Flex alignItems="center" flexDirection="column">
                 <Flex pt="160px" justifyContent="center" alignItems="center">
                     <Heading fontSize={30} fontWeight="semibold">
                         Build fast. Query faster. Debug forever.
@@ -47,7 +31,7 @@ export default function Page() {
                 </Flex>
 
                 <Flex pt="15vh">
-                    <Card transform="translate(-40%, 20%)">
+                    <Card transform="translate(-7vw, 7vh)">
                         <Flex direction="column" alignItems="center" gap={12}>
                             <Heading fontWeight="bold" fontSize="xl">
                                 Database Management
@@ -86,9 +70,10 @@ export default function Page() {
                                 color="orange.400"
                             />
                             <Button
+                                w="100%"
                                 onClick={() =>
                                     router.push(
-                                        isLoggedIn ? '/dashboard' : '/login',
+                                        isLogged ? '/dashboard' : '/login',
                                     )
                                 }
                             >
@@ -96,7 +81,7 @@ export default function Page() {
                             </Button>
                         </Flex>
                     </Card>
-                    <Card transform="translate(40%, -20%)">
+                    <Card transform="translate(7vw, -7vh)">
                         <Flex direction="column" alignItems="center" gap={12}>
                             <Heading fontWeight="bold" fontSize="xl">
                                 Advanced Settings
@@ -119,5 +104,5 @@ export default function Page() {
                 </Flex>
             </Flex>
         </div>
-    )
+    );
 }

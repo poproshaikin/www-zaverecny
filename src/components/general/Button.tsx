@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import React from 'react'
-import * as Chakra from '@chakra-ui/react'
+import React from 'react';
+import * as Chakra from '@chakra-ui/react';
 
 export default function Button({
     children,
@@ -12,12 +12,16 @@ export default function Button({
             bg="gray.900"
             borderRadius="xl"
             fontWeight="semibold"
-            minW="5vw"
             fontSize="sm"
-            _active={{ background: 'gray.700' }}
+            minW="max-content"
+            p={4}
+            _active={{
+                background: 'gray.700',
+                transform: 'translateY(3px)',
+            }}
             {...rest}
         >
             {children}
         </Chakra.Button>
-    )
+    );
 }

@@ -1,22 +1,24 @@
-'use client'
+'use client';
 
-import { Flex, Heading, Icon } from '@chakra-ui/react'
-import React from 'react'
-import Button from '../../components/general/Button'
-import { useIsLoggedIn } from '@/helpers/auth/utils'
-import { useRouter } from 'next/navigation'
+import { Flex, Heading, Icon, Spinner } from '@chakra-ui/react';
+import React from 'react';
+import Button from '../../components/general/Button';
+import { useRouter } from 'next/navigation';
+import { useEnsureToken } from '@/helpers/auth';
 
 export default function Navbar({
     withHome = false,
     withDashboard = false,
     withProfile = false,
+    loadingButtons = false,
 }: {
-    withHome?: boolean
-    withDashboard?: boolean
-    withProfile?: boolean
+    withHome?: boolean;
+    withDashboard?: boolean;
+    withProfile?: boolean;
+    loadingButtons?: boolean;
 }) {
-    const isLogged = useIsLoggedIn()
-    const router = useRouter()
+    const { isLogged, isPending } = useEnsureToken();
+    const router = useRouter();
 
     return (
         <Flex
@@ -40,37 +42,77 @@ export default function Navbar({
             <Flex gap={4} flexDirection="row">
                 {withHome && (
                     <Button
-                        onClick={() => {
-                            router.push('/')
-                        }}
+                        w="6vw"
+                        minW="max-content"
+                        onClick={() => (loadingButtons ? {} : router.push('/'))}
                     >
-                        Home
+                        {loadingButtons ? <Spinner size="sm" /> : 'Home'}
                     </Button>
                 )}
                 {isLogged ? (
                     <>
                         {withDashboard && (
-                            <Button onClick={() => router.push('/dashboard')}>
-                                Dashboard
+                            <Button
+                                w="6vw"
+                                minW="max-content"
+                                onClick={() =>
+                                    loadingButtons
+                                        ? {}
+                                        : router.push('/dashboard')
+                                }
+                            >
+                                {loadingButtons ? (
+                                    <Spinner size="sm" />
+                                ) : (
+                                    'Dashboard'
+                                )}
                             </Button>
                         )}
                         {withProfile && (
-                            <Button onClick={() => router.push('/profile')}>
-                                Profile
+                            <Button
+                                w="6vw"
+                                minW="max-content"
+                                onClick={() =>
+                                    loadingButtons
+                                        ? {}
+                                        : router.push('/profile')
+                                }
+                            >
+                                {loadingButtons ? (
+                                    <Spinner size="sm" />
+                                ) : (
+                                    'Profile'
+                                )}
                             </Button>
                         )}
                     </>
                 ) : (
                     <>
-                        <Button onClick={() => router.push('/login')}>
-                            Log In
+                        <Button
+                            w="6vw"
+                            minW="max-content"
+                            onClick={() =>
+                                loadingButtons ? {} : router.push('/login')
+                            }
+                        >
+                            {loadingButtons ? <Spinner size="sm" /> : 'Log in'}
                         </Button>
-                        <Button onClick={() => router.push('/register')}>
-                            Register
+                        <Button
+                            w="6vw"
+                            minW="max-content"
+                            onClick={() =>
+                                loadingButtons ? {} : router.push('/register')
+                            }
+                        >
+                            {loadingButtons ? (
+                                <Spinner size="sm" />
+                            ) : (
+                                'Register'
+                            )}
                         </Button>
                     </>
                 )}
             </Flex>
         </Flex>
-    )
+    );
 }

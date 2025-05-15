@@ -1,51 +1,50 @@
-'use client'
+'use client';
 
-import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
-import ReturnButton from '@/components/nav/ReturnButton'
-import Card from '@/components/general/Card'
-import { FaUserCheck } from 'react-icons/fa'
-import Button from '@/components/general/Button'
-import InputField from '@/components/general/InputField'
-import { useForm } from 'react-hook-form'
-import { UserRegister } from '@/types/db/user'
-import { useLogin, useRegister } from '@/helpers/auth'
-import { useEffect } from 'react'
-import { saveToken } from '@/helpers/auth/utils'
-import { toaster } from '@/components/utils/toaster'
+import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
+import ReturnButton from '@/components/nav/ReturnButton';
+import Card from '@/components/general/Card';
+import { FaUserCheck } from 'react-icons/fa';
+import Button from '@/components/general/Button';
+import InputField from '@/components/general/InputField';
+import { useForm } from 'react-hook-form';
+import { UserRegister } from '@/types/db/user';
+import { useLogin, useRegister } from '@/helpers/auth';
+import { useEffect } from 'react';
+import { saveToken } from '@/helpers/auth/utils';
+import { toaster } from '@/components/utils/toaster';
 
 export default function RegisterPage() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const { register, handleSubmit } = useForm<UserRegister>()
+    const { register, handleSubmit } = useForm<UserRegister>();
 
-    const { mutateAsync } = useRegister()
+    const { mutateAsync } = useRegister();
 
     const onSubmit = async (data: UserRegister) => {
         await mutateAsync(data, {
             onSuccess: async (data: string) => {
-                saveToken(data)
-                console.log('he')
+                saveToken(data);
                 toaster.create({
                     type: 'success',
                     title: 'Registration successful',
                     description: 'You have successfully registered.',
-                })
+                });
             },
             onError: async (err) => {
                 toaster.create({
                     type: 'error',
                     title: 'Error',
                     description: 'We could not register you. Please try again.',
-                })
+                });
             },
-        })
-    }
+        });
+    };
 
     return (
         <Box>
             <ReturnButton />
-            <Flex bg="primary" h="100vh" justify="center" align="center" px={4}>
+            <Flex justify="center" align="center" px={4}>
                 <Card w="100%" maxW="960px" h="auto">
                     <Flex direction={{ base: 'column', md: 'row' }} h="full">
                         <Flex
@@ -118,5 +117,5 @@ export default function RegisterPage() {
                 </Card>
             </Flex>
         </Box>
-    )
+    );
 }

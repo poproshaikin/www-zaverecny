@@ -2,23 +2,23 @@
 
 import * as Chakra from '@chakra-ui/react';
 import React from 'react';
-import {CardRootProps} from "@chakra-ui/react";
+import { CardRootProps } from '@chakra-ui/react';
 
-export default function Card({children, ...rest}: { children: React.ReactNode } & CardRootProps) {
+export default function Card({
+    children,
+    ...rest
+}: { children: React.ReactNode } & CardRootProps) {
     return (
         <Chakra.Card.Root
-            bg='secondary'
+            bg="secondary"
             boxShadow="2xs"
             borderRadius="xl"
             w="350px"
             p={8}
-            minH="250px"
-            color='gray.900'
+            color="gray.900"
             {...rest}
         >
-            <Chakra.Card.Body >
-                {children}
-            </Chakra.Card.Body>
+            <Chakra.Card.Body>{children}</Chakra.Card.Body>
         </Chakra.Card.Root>
     );
 }

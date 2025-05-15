@@ -1,20 +1,69 @@
-'use client'
+'use client';
 
-import { useMutationPost, useQueryGet } from '@/helpers/api'
-import { UserLogin, UserRegister } from '@/types/db/user'
+import {
+    useMutationGet,
+    useMutationGetRes,
+    useMutationPost,
+    useQueryGet,
+} from '@/helpers/api';
+import { UserLogin, UserRegister } from '@/types/db/user';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import {
+    getTokenFromStorage,
+    removeToken,
+    saveToken,
+} from '@/helpers/auth/utils';
+import { useEffect, useState } from 'react';
 
 export function useLogin() {
-    return useMutationPost<UserLogin, string>('/api/auth/login')
+    return useMutationPost<UserLogin, string>('/api/auth/login');
 }
 
 export function useRegister() {
-    return useMutationPost<UserRegister, string>('/api/auth/register')
+    return useMutationPost<UserRegister, string>('/api/auth/register');
+}
+
+export function useEnsureToken() {
+    const [isLogged, setIsLogged] = useState(false);
+    const [isPending, setIsPending] = useState(true);
+    const [validated, setValidated] = useState(false);
+
+    const token = getTokenFromStorage();
+    const rqValidate = useValidateToken();
+
+    useEffect(() => {
+        if (!token) {
+            setIsLogged(false);
+            setIsPending(false);
+            setValidated(true);
+            return;
+        }
+
+        if (validated) return;
+
+        setIsPending(true);
+        rqValidate.mutate(undefined, {
+            onSuccess: (res) => {
+                if (res.ok) {
+                    setIsLogged(true);
+                } else {
+                    removeToken();
+                    setIsLogged(false);
+                }
+                setIsPending(false);
+            },
+            onError: () => {
+                removeToken();
+                setIsLogged(false);
+                setIsPending(false);
+            },
+        });
+    }, []);
+
+    return { isLogged, isPending };
 }
 
 export function useValidateToken() {
-    return useQueryGet('/api/auth/validate')
-}
-
-export function useRenewToken() {
-    return useQueryGet<string>('/api/auth/renew')
+    return useMutationGetRes('/api/auth/validate');
 }

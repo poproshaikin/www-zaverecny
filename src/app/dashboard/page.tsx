@@ -1,73 +1,71 @@
-'use client'
+'use client';
 
 import {
     Box,
     Center,
     Flex,
     Heading,
+    HStack,
     Icon,
     Spinner,
     Text,
     VStack,
-} from '@chakra-ui/react'
-import Navbar from '@/components/nav/Navbar'
-import { useGetDatabases } from '@/helpers/databases'
-import Card from '@/components/general/Card'
-import { TbDatabaseOff } from 'react-icons/tb'
-import Button from '@/components/general/Button'
-import { GoPlus } from 'react-icons/go'
+} from '@chakra-ui/react';
+import Navbar from '@/components/nav/Navbar';
+import { useGetDatabases } from '@/helpers/databases';
+import Card from '@/components/general/Card';
+import { TbDatabaseOff } from 'react-icons/tb';
+import Button from '@/components/general/Button';
+import { GoPlus } from 'react-icons/go';
+import { useIsTokenSaved } from '@/helpers/auth/utils';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import LoadingPage from '@/components/general/Loading';
+import ErrorPage from '@/components/general/ErrorPage';
+import ClickableCard from '@/components/general/ClickableCard';
 
 export default function Dashboard() {
-    const userDatabases = useGetDatabases()
-    if (userDatabases.isLoading) {
-        return (
-            <Box bg="primary" h="100vh">
-                <Navbar withHome withProfile />
-                <Flex
-                    justifyContent="center"
-                    height="100vh"
-                    alignItems="center"
-                >
-                    <Spinner size="xl" />
-                </Flex>
-            </Box>
-        )
+    const isLoggedIn = useIsTokenSaved();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isLoggedIn.isReady && !isLoggedIn.result) {
+            router.replace('/login');
+        }
+    }, [isLoggedIn, router]);
+
+    const userDatabases = useGetDatabases();
+    if (userDatabases.isLoading || !isLoggedIn.isReady) {
+        return <LoadingPage />;
     }
     if (userDatabases.isError) {
-        return (
-            <Box bg="primary" h="100vh">
-                <Navbar withHome withProfile />
-                <Flex
-                    justifyContent="center"
-                    height="100vh"
-                    alignItems="center"
-                >
-                    <Card>{userDatabases.error.message}</Card>
-                </Flex>
-            </Box>
-        )
+        return <ErrorPage error={userDatabases.error} />;
     }
     return (
-        <Box bg="primary" h="100vh">
+        <Box>
             <Navbar withHome withProfile />
             <Flex justifyContent="center" height="100vh" alignItems="center">
                 <Flex h="50vh" w="50vw" mr="10vw" direction="column">
-                    <Box borderBottom="1px solid black" w="20vw" mb={8} p={4}>
-                        <Heading
-                            fontSize="3xl"
-                            fontWeight="bold"
-                            w="max-content"
-                        >
+                    <Box w="40%" mb={8} px={4}>
+                        <Heading fontSize="3xl" fontWeight="bold">
                             Your databases
                         </Heading>
-                        <Button h="3.5vh" w="full" mt={8}>
+                        <Text mt={2}>
+                            We won't steal your data,{' '}
+                            <strong>we promise</strong>.
+                        </Text>
+                        <Button
+                            onClick={() => router.push('database/new')}
+                            w="max-content"
+                            my={8}
+                        >
                             <Icon as={GoPlus} boxSize={6} color="green.400" />
                             New
                         </Button>
                     </Box>
                     {userDatabases.data?.length === 0 ? (
-                        <Card w="20vw">
-                            <VStack gap={10}>
+                        <Card>
+                            <Flex direction="column" gap={10}>
                                 <Center w="full">
                                     <Icon
                                         as={TbDatabaseOff}
@@ -81,14 +79,31 @@ export default function Dashboard() {
                                 <Text fontWeight="semibold">
                                     Create a new database to get started.
                                 </Text>
-                                <Button>Procreate</Button>
-                            </VStack>
+                                <Button
+                                    onClick={() => router.push('/database/new')}
+                                >
+                                    Create
+                                </Button>
+                            </Flex>
                         </Card>
                     ) : (
-                        <Card>h</Card>
+                        <HStack w="60vw" flexWrap="wrap" gap={4}>
+                            {userDatabases.data!.map((database) => (
+                                <ClickableCard
+                                    onClick={() =>
+                                        router.push(`/database/${database.id}`)
+                                    }
+                                    p={4}
+                                    minW="15vw"
+                                    w="max-content"
+                                >
+                                    <Heading>{database.name}</Heading>
+                                </ClickableCard>
+                            ))}
+                        </HStack>
                     )}
                 </Flex>
             </Flex>
         </Box>
-    )
+    );
 }
