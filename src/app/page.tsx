@@ -7,11 +7,29 @@ import { FaBoltLightning } from 'react-icons/fa6'
 import Navbar from '@/components/nav/Navbar'
 import { useRouter } from 'next/navigation'
 import { FaDatabase, FaTools } from 'react-icons/fa'
-import { useIsLoggedIn } from '@/helpers/auth/utils'
+import { useGetTokenFromStorage, useIsLoggedIn } from '@/helpers/auth/utils'
+import { useValidateToken } from '@/helpers/auth'
+import { useEffect } from 'react'
+import { successToast } from '@/components/utils/toast'
 
 export default function Page() {
     const router = useRouter()
     const isLoggedIn = useIsLoggedIn()
+    const validation = useValidateToken()
+
+    useEffect(() => {
+        const token = useGetTokenFromStorage()
+        if (!token) {
+            return
+        }
+        if (validation.isLoading) {
+            return
+        }
+        if (validation.isError) {
+            sessionStorage.removeItem('app-auth.jwt-token')
+            return
+        }
+    }, [])
 
     return (
         <div>

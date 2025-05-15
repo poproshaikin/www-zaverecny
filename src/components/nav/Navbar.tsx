@@ -57,7 +57,7 @@ export default function Navbar({
                     </>
                 ) : (
                     <>
-                        <Button onClick={() => router.push('/log-in')}>
+                        <Button onClick={() => router.push('/login')}>
                             Log In
                         </Button>
                         <Button onClick={() => router.push('/register')}>

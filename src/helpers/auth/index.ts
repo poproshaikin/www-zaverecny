@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import { useMutationPost } from '@/helpers/api'
+import { useMutationPost, useQueryGet } from '@/helpers/api'
 import { UserLogin, UserRegister } from '@/types/db/user'
 
 export function useLogin() {
@@ -10,4 +9,12 @@ export function useLogin() {
 
 export function useRegister() {
     return useMutationPost<UserRegister, string>('/api/auth/register')
+}
+
+export function useValidateToken() {
+    return useQueryGet('/api/auth/validate')
+}
+
+export function useRenewToken() {
+    return useQueryGet<string>('/api/auth/renew')
 }

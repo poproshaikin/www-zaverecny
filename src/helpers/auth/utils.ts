@@ -14,8 +14,14 @@ export const useIsLoggedIn = () => {
 
     return isLoggedIn
 }
-export const getTokenFromStorage = () =>
-    sessionStorage.getItem('app-auth.jwt-token') as string
 
-export const saveToken = (token: string) =>
-    sessionStorage.setItem('app-auth.jwt-token', token)
+export function useGetTokenFromStorage(): string | null {
+    if (!sessionStorage) {
+        return null
+    }
+    return sessionStorage.getItem('app-auth.jwt-token')
+}
+
+export function saveToken(token: string): void {
+    sessionStorage?.setItem('app-auth.jwt-token', token)
+}

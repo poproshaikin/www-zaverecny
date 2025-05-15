@@ -1,12 +1,8 @@
+'use client'
+
 import { useQueryGet } from '@/helpers/api'
+import { VirtualDb } from '@/types/db/database'
 
 export function useGetDatabases() {
-    const { data, isLoading, error } = useQueryGet(`/api/database`)
-    if (isLoading) {
-        return { databases: null, isLoading: true, error: null }
-    }
-    if (error) {
-        return { databases: null, isLoading: false, error }
-    }
-    return { databases: data, isLoading: false, error: null }
+    return useQueryGet<VirtualDb[]>(`/api/database`)
 }

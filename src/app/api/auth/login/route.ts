@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { UserLoginSchema } from '@/types/db/user'
 import prisma from '@/db/prisma'
 import { comparePasswordAsync } from '@/helpers/auth/bcrypt'
-import { generateToken } from '@/helpers/auth/jwt'
+import { generateToken } from '@/app/api/_utils/jwt'
 
 export async function POST(request: NextRequest) {
     const data = await request.json()
@@ -27,7 +27,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json('Invalid password', { status: 401 })
     }
 
-    const jwt = generateToken({ userId: user.id, username: user.username })
+    const jwt = await generateToken({
+        userId: user.id,
+        username: user.username,
+    })
 
     return NextResponse.json(jwt, { status: 200 })
 }

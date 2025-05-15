@@ -17,12 +17,7 @@ import { toaster } from '@/components/utils/toaster'
 export default function RegisterPage() {
     const router = useRouter()
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        getValues,
-    } = useForm<UserRegister>()
+    const { register, handleSubmit } = useForm<UserRegister>()
 
     const { mutateAsync } = useRegister()
 
@@ -37,7 +32,7 @@ export default function RegisterPage() {
                     description: 'You have successfully registered.',
                 })
             },
-            onError: async (err: Error) => {
+            onError: async (err) => {
                 toaster.create({
                     type: 'error',
                     title: 'Error',
@@ -67,7 +62,7 @@ export default function RegisterPage() {
                             <Text fontSize="md" fontWeight="semibold">
                                 Already have an account?
                             </Text>
-                            <Button onClick={() => router.push('/log-in')}>
+                            <Button onClick={() => router.push('/login')}>
                                 Log in
                             </Button>
                         </Flex>

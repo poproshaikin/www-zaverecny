@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromRequest } from '@/helpers/api'
-import { verifyToken } from '@/helpers/auth/jwt'
+import { verifyToken } from '@/app/api/_utils/jwt'
 import prisma from '@/db/prisma'
+import { getTokenFromRequest } from '@/app/api/_utils'
 
 export async function GET(request: NextRequest) {
-    const token = getTokenFromRequest(request)
+    const token = await getTokenFromRequest(request)
     if (!token) {
         return NextResponse.json('Unauthorized', { status: 401 })
     }
-    const payload = verifyToken(token)
+    const payload = await verifyToken(token)
     if (!payload) {
         return NextResponse.json('Unauthorized', { status: 401 })
     }

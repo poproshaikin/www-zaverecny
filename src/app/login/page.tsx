@@ -23,8 +23,8 @@ export default function LogInPage() {
     const onSubmit = async (data: UserLogin) => {
         await mutateAsync(data, {
             onSuccess: async (data) => {
+                console.log('received jwt', data)
                 saveToken(data)
-                console.log('logging in')
                 toaster.create({
                     type: 'success',
                     title: 'Login successful',
