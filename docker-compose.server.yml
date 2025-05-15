@@ -9,7 +9,7 @@ services:
     networks:
       - app
     ports:
-      - "3000:3000"
+      - "12121:3000"
     depends_on:
       - db
     volumes:

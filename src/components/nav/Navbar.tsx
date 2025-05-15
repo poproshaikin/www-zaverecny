@@ -29,7 +29,12 @@ export default function Navbar({
             position="fixed"
             color="gray.900"
         >
-            <Heading fontSize={25} fontWeight="bold">
+            <Heading
+                fontSize={25}
+                fontWeight="bold"
+                cursor="pointer"
+                onClick={() => router.push('/')}
+            >
                 DeltaCloud
             </Heading>
             <Flex gap={4} flexDirection="row">
