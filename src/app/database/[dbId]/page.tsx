@@ -6,13 +6,18 @@ import { useGetDatabase } from '@/helpers/databases';
 import { useEffect, useState } from 'react';
 import { VirtualDb } from '@/types/db/database';
 import Loading from '@/components/general/Loading';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Card from '@/components/general/Card';
+import { useEnsureLoggedInOrRedirect, useEnsureToken } from '@/helpers/auth';
 
 export default function DatabasePage() {
+    const { isLogged, isPending } = useEnsureLoggedInOrRedirect();
+
     const { dbId } = useParams();
     const [db, setDb] = useState<VirtualDb | null | Error>(null);
+
     const rqDatabase = useGetDatabase();
+
     useEffect(() => {
         rqDatabase.mutateAsync(
             { route: { dbId: dbId as string } },
@@ -28,7 +33,7 @@ export default function DatabasePage() {
         );
     }, []);
 
-    if (rqDatabase.isPending || !db || db instanceof Error) {
+    if (rqDatabase.isPending || isPending || !db || db instanceof Error) {
         return <Loading loadingButtons />;
     }
 
@@ -37,7 +42,7 @@ export default function DatabasePage() {
             <Navbar withHome withDashboard withProfile isLogged />
             <Flex height="100vh" direction="column" justifyContent="center">
                 <Box>
-                    <Card p={4}>
+                    <Card ml={12} p={4}>
                         <Heading>{db.name}</Heading>
                         <Flex direction="column" gap={4} mt={4}></Flex>
                     </Card>

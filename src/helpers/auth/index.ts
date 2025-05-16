@@ -24,6 +24,17 @@ export function useRegister() {
     return useMutationPost<UserRegister, string>('/api/auth/register');
 }
 
+export function useEnsureLoggedInOrRedirect() {
+    const router = useRouter();
+    const { isLogged, isPending } = useEnsureToken();
+    useEffect(() => {
+        if (!isPending && !isLogged) {
+            router.replace('/login');
+        }
+    }, [isLogged, router]);
+    return { isLogged, isPending };
+}
+
 export function useEnsureToken() {
     const [isLogged, setIsLogged] = useState(false);
     const [isPending, setIsPending] = useState(true);
@@ -59,7 +70,7 @@ export function useEnsureToken() {
                 setIsPending(false);
             },
         });
-    }, []);
+    }, [token]);
 
     return { isLogged, isPending };
 }

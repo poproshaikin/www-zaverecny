@@ -21,8 +21,12 @@ import InputField from '@/components/general/InputField';
 import Button from '@/components/general/Button';
 import { useCreateVirtualDb } from '@/helpers/databases';
 import { errorToast, successToast } from '@/components/utils/toast';
+import { useEnsureLoggedInOrRedirect } from '@/helpers/auth';
+import Loading from '@/components/general/Loading';
 
 export default function NewDb() {
+    const { isLogged, isPending: isLoggingPending } =
+        useEnsureLoggedInOrRedirect();
     const router = useRouter();
     const { mutateAsync, isPending } = useCreateVirtualDb();
 
@@ -46,6 +50,10 @@ export default function NewDb() {
             },
         });
     };
+
+    if (isPending || isLoggingPending) {
+        return <Loading loadingButtons />;
+    }
 
     return (
         <Box h="full">

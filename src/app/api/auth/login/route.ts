@@ -3,6 +3,7 @@ import { UserLoginSchema } from '@/types/db/user';
 import prisma from '@/db/prisma';
 import { comparePasswordAsync } from '@/helpers/auth/bcrypt';
 import { generateToken } from '@/app/api/_utils/jwt';
+import { error } from '@/app/api/_utils';
 
 export async function POST(request: NextRequest) {
     const data = await request.json();
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
-        return NextResponse.json({ message: 'User not found', status: 404 });
+        return error('Invalid credentials', 401);
     }
 
     const isPasswordValid = await comparePasswordAsync(
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
         user.password,
     );
     if (!isPasswordValid) {
-        return NextResponse.json({ message: 'Invalid password', status: 401 });
+        return error('Invalid credentials', 401);
     }
 
     const jwt = await generateToken({
