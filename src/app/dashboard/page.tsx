@@ -43,7 +43,7 @@ export default function Dashboard() {
     }
     return (
         <Box>
-            <Navbar withHome withProfile />
+            <Navbar withHome withProfile isLogged={true} />
             <Flex justifyContent="center" height="100vh" alignItems="center">
                 <Flex h="50vh" w="50vw" mr="10vw" direction="column">
                     <Box w="40%" mb={8} px={4}>
@@ -90,6 +90,7 @@ export default function Dashboard() {
                         <HStack w="60vw" flexWrap="wrap" gap={4}>
                             {userDatabases.data!.map((database) => (
                                 <ClickableCard
+                                    key={database.id}
                                     onClick={() =>
                                         router.push(`/database/${database.id}`)
                                     }

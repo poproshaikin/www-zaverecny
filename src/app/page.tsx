@@ -22,7 +22,7 @@ export default function Page() {
 
     return (
         <div>
-            <Navbar withProfile withDashboard />
+            <Navbar withProfile withDashboard isLogged={isLogged} />
             <Flex alignItems="center" flexDirection="column">
                 <Flex pt="160px" justifyContent="center" alignItems="center">
                     <Heading fontSize={30} fontWeight="semibold">

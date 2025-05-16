@@ -1,10 +1,10 @@
-import Navbar from '@/components/nav/Navbar'
-import { Box } from '@chakra-ui/react'
+import Navbar from '@/components/nav/Navbar';
+import { Box } from '@chakra-ui/react';
 
 export default function Profile() {
     return (
         <Box>
-            <Navbar withDashboard withHome />
+            <Navbar withDashboard withHome isLogged />
         </Box>
-    )
+    );
 }

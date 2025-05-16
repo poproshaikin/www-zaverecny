@@ -7,17 +7,18 @@ import { useRouter } from 'next/navigation';
 import { useEnsureToken } from '@/helpers/auth';
 
 export default function Navbar({
+    isLogged,
     withHome = false,
     withDashboard = false,
     withProfile = false,
     loadingButtons = false,
 }: {
+    isLogged: boolean;
     withHome?: boolean;
     withDashboard?: boolean;
     withProfile?: boolean;
     loadingButtons?: boolean;
 }) {
-    const { isLogged, isPending } = useEnsureToken();
     const router = useRouter();
 
     return (

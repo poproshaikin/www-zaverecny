@@ -10,7 +10,12 @@ export default function Loading({
     return (
         <Portal>
             <Box bg="primary" h="100vh">
-                <Navbar withHome withProfile loadingButtons={loadingButtons} />
+                <Navbar
+                    isLogged={false}
+                    withHome
+                    withProfile
+                    loadingButtons={loadingButtons}
+                />
                 <Flex
                     justifyContent="center"
                     height="100vh"

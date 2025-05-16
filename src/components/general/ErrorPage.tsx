@@ -5,7 +5,7 @@ import Card from '@/components/general/Card';
 export default function ErrorPage({ error }: { error: Error }) {
     return (
         <Box>
-            <Navbar />
+            <Navbar isLogged={true} withHome withDashboard />
             <Box
                 display="flex"
                 justifyContent="center"

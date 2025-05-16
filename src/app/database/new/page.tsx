@@ -49,7 +49,7 @@ export default function NewDb() {
 
     return (
         <Box h="full">
-            <Navbar withProfile withDashboard />
+            <Navbar withProfile withDashboard isLogged />
             <Flex h="full" w="full" alignItems="center" justifyContent="center">
                 <Card w="30%">
                     <Flex direction="column" gap={8}>

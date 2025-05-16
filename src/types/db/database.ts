@@ -20,3 +20,11 @@ export const CreateVirtualDbSchema = z.object({
 });
 
 export type CreateVirtualDb = z.infer<typeof CreateVirtualDbSchema>;
+
+export const GetVirtualDbParamsSchema = z.object({
+    route: z.object({
+        dbId: z.string().uuid(),
+    }),
+});
+
+export type GetVirtualDbParams = z.infer<typeof GetVirtualDbParamsSchema>;
