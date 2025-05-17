@@ -11,7 +11,6 @@ export default function Card({
     return (
         <Chakra.Card.Root
             bg="secondary"
-            boxShadow="2xs"
             borderRadius="xl"
             w="350px"
             p={8}

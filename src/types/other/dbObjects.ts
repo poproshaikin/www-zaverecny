@@ -1,14 +1,5 @@
 import z from 'zod';
 
-export const TableInfoSchema = z.object({
-    id: z.string().uuid(),
-    userId: z.string().uuid(),
-    dbId: z.string().uuid(),
-    name: z.string(),
-});
-
-export type TableInfo = z.infer<typeof TableInfoSchema>;
-
 export const ColumnDataTypeSchema = z.enum([
     'int',
     'bigint',
@@ -47,3 +38,12 @@ export const ColumnInfoSchema = z.object({
     foreignKeyColumnId: z.string().uuid().nullable(),
     defaultValue: z.string().nullable(),
 });
+
+export const TableInfoSchema = z.object({
+    id: z.string().uuid(),
+    userId: z.string().uuid(),
+    dbId: z.string().uuid(),
+    name: z.string(),
+});
+
+export type TableInfo = z.infer<typeof TableInfoSchema>;

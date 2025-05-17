@@ -22,20 +22,24 @@ import LoadingPage from '@/components/general/Loading';
 import ErrorPage from '@/components/general/ErrorPage';
 import ClickableCard from '@/components/general/ClickableCard';
 import { useEnsureLoggedInOrRedirect } from '@/helpers/auth';
+import { VirtualDb } from '@/types/db/database';
+import { ApiError } from '@/helpers/api';
 
 export default function Dashboard() {
-    const { isLogged, isPending } = useEnsureLoggedInOrRedirect();
+    const { isLogged, isLoggingPending } = useEnsureLoggedInOrRedirect();
 
     const router = useRouter();
 
-    const userDatabases = useGetDatabases();
+    const rqUserDatabases = useGetDatabases();
 
-    if (userDatabases.isLoading || isPending) {
+    if (rqUserDatabases.isLoading || isLoggingPending) {
         return <LoadingPage />;
     }
-    if (userDatabases.isError) {
-        return <ErrorPage error={userDatabases.error} />;
+    if (rqUserDatabases.isError) {
+        return <ErrorPage error={rqUserDatabases.error as ApiError} />;
     }
+
+    const databases: VirtualDb[] = rqUserDatabases.data!.data;
 
     return (
         <Box>
@@ -59,7 +63,7 @@ export default function Dashboard() {
                             New
                         </Button>
                     </Box>
-                    {userDatabases.data?.length === 0 ? (
+                    {databases.length === 0 ? (
                         <Card>
                             <Flex direction="column" gap={10}>
                                 <Center w="full">
@@ -84,16 +88,7 @@ export default function Dashboard() {
                         </Card>
                     ) : (
                         <HStack w="60vw" flexWrap="wrap" gap={4}>
-                            {(!userDatabases.data ||
-                                !userDatabases.data.map) && (
-                                <Card>
-                                    <Heading>
-                                        Failed to load databases, please try
-                                        again
-                                    </Heading>
-                                </Card>
-                            )}
-                            {userDatabases.data!.map?.((database) => (
+                            {databases.map((database) => (
                                 <ClickableCard
                                     key={database.id}
                                     onClick={() =>

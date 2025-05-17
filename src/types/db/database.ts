@@ -1,4 +1,5 @@
 import z from 'zod';
+import { TableInfoSchema } from '@/types/other/dbObjects';
 
 const minNameLength = 3;
 const maxNameLength = 50;

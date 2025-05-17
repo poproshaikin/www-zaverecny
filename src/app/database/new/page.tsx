@@ -25,7 +25,7 @@ import { useEnsureLoggedInOrRedirect } from '@/helpers/auth';
 import Loading from '@/components/general/Loading';
 
 export default function NewDb() {
-    const { isLogged, isPending: isLoggingPending } =
+    const { isLogged, isLoggingPending: isLoggingPending } =
         useEnsureLoggedInOrRedirect();
     const router = useRouter();
     const { mutateAsync, isPending } = useCreateVirtualDb();
@@ -39,9 +39,9 @@ export default function NewDb() {
 
     const onSubmit = async (data: CreateVirtualDb) => {
         await mutateAsync(data, {
-            onSuccess: async (data) => {
+            onSuccess: async (result) => {
                 successToast('Database created successfully');
-                router.push(`/database/${data.id}`);
+                router.push(`/database/${result.data.id}`);
             },
             onError: async (error) => {
                 console.error(error);

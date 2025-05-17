@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/db/prisma';
-import { error, getTokenFromRequest } from '../_utils';
+import { errorResponse, getTokenFromRequest, successResponse } from '../_utils';
 import { verifyToken } from '@/app/api/_utils/jwt';
 import { CreateVirtualDb } from '@/types/db/database';
 import { createSchema } from '@/app/api/_utils/pg/schema';
@@ -10,12 +10,20 @@ export async function GET(request: NextRequest) {
     const jwt = await getTokenFromRequest(request);
 
     if (!jwt) {
-        return error('No JWT provided', 400);
+        return errorResponse(
+            "Failed to get user's databases",
+            'No JWT provided',
+            400,
+        );
     }
 
     const verify = await verifyToken(jwt);
     if (!verify) {
-        return error('Invalid JWT', 401);
+        return errorResponse(
+            "Failed to get user's databases",
+            'Invalid JWT',
+            401,
+        );
     }
 
     const databases = await prisma.virtualDb.findMany({
@@ -31,25 +39,38 @@ export async function POST(request: NextRequest) {
     const jwt = await getTokenFromRequest(request);
 
     if (!jwt) {
-        return error('No JWT provided', 400);
+        return await errorResponse(
+            "Failed to get user's databases",
+            'No JWT provided',
+            400,
+        );
     }
 
     const verify = await verifyToken(jwt);
     if (!verify) {
-        return error('Invalid JWT', 401);
+        return await errorResponse(
+            "Failed to get user's databases",
+            'Invalid JWT',
+            401,
+        );
     }
 
     const body = (await request.json()) as CreateVirtualDb;
 
     if (
         (await prisma.virtualDb.findFirst({
+            select: {},
             where: {
                 userId: verify.userId,
                 name: body.name,
             },
         })) !== null
     ) {
-        return error('Database name already exists', 409);
+        return await errorResponse(
+            "Failed to get user's databases",
+            'Database name is occupied',
+            409,
+        );
     }
 
     const newSchemaName = await getSchemaName({
@@ -65,10 +86,14 @@ export async function POST(request: NextRequest) {
     });
 
     if (!virtualDb) {
-        return error('Failed to create database', 500);
+        return await errorResponse(
+            "Failed to get user's databases",
+            'Failed to create database',
+            500,
+        );
     }
 
     await createSchema(virtualDb);
 
-    return NextResponse.json(virtualDb, { status: 200 });
+    return await successResponse(virtualDb, 200);
 }

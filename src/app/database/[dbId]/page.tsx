@@ -3,39 +3,29 @@
 import { Box, Flex, Heading, Separator } from '@chakra-ui/react';
 import Navbar from '@/components/nav/Navbar';
 import { useGetDatabase } from '@/helpers/databases';
-import { useEffect, useState } from 'react';
 import { VirtualDb } from '@/types/db/database';
 import Loading from '@/components/general/Loading';
 import { useParams, useRouter } from 'next/navigation';
 import Card from '@/components/general/Card';
 import { useEnsureLoggedInOrRedirect, useEnsureToken } from '@/helpers/auth';
+import ErrorPage from '@/components/general/ErrorPage';
+import { ApiError } from '@/helpers/api';
 
 export default function DatabasePage() {
-    const { isLogged, isPending } = useEnsureLoggedInOrRedirect();
+    const { isLogged, isLoggingPending } = useEnsureLoggedInOrRedirect();
 
     const { dbId } = useParams();
-    const [db, setDb] = useState<VirtualDb | null | Error>(null);
+    const rqDatabase = useGetDatabase(dbId as string);
 
-    const rqDatabase = useGetDatabase();
-
-    useEffect(() => {
-        rqDatabase.mutateAsync(
-            { route: { dbId: dbId as string } },
-            {
-                onSuccess: (result) => {
-                    setDb(result);
-                },
-                onError: (error) => {
-                    console.error('Error fetching database:', error);
-                    setDb(error);
-                },
-            },
-        );
-    }, []);
-
-    if (rqDatabase.isPending || isPending || !db || db instanceof Error) {
+    if (rqDatabase.isPending || isLoggingPending) {
         return <Loading loadingButtons />;
     }
+
+    if (rqDatabase.isError) {
+        return <ErrorPage error={rqDatabase.error as ApiError} />;
+    }
+
+    const db: VirtualDb = rqDatabase.data.data;
 
     return (
         <Box>

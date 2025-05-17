@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutationPost, useQueryGet, useQueryGetParams } from '@/helpers/api';
+import { useMutationPost, useQueryGet } from '@/helpers/api';
 import {
     CreateVirtualDb,
     GetVirtualDbParams,
@@ -11,12 +11,10 @@ export function useGetDatabases() {
     return useQueryGet<VirtualDb[]>(`/api/database`);
 }
 
-export function useGetDatabase() {
-    return useQueryGetParams<VirtualDb, GetVirtualDbParams>(
-        `/api/database/{dbId}`,
-    );
+export function useGetDatabase(dbId: string) {
+    return useQueryGet<VirtualDb>(`/api/database/${dbId}`);
 }
 
 export function useCreateVirtualDb() {
-    return useMutationPost<CreateVirtualDb, VirtualDb>('/api/database');
+    return useMutationPost<VirtualDb, CreateVirtualDb>('/api/database');
 }

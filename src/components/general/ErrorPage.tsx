@@ -1,8 +1,9 @@
 import Navbar from '@/components/nav/Navbar';
 import { Box } from '@chakra-ui/react';
 import Card from '@/components/general/Card';
+import { ApiError } from '@/helpers/api';
 
-export default function ErrorPage({ error }: { error: Error }) {
+export default function ErrorPage({ error }: { error: ApiError }) {
     return (
         <Box>
             <Navbar isLogged={true} withHome withDashboard />
@@ -13,7 +14,7 @@ export default function ErrorPage({ error }: { error: Error }) {
                 height="100vh"
                 bg="primary"
             >
-                <Card>
+                <Card w="max-content">
                     <Box
                         display="flex"
                         flexDirection="column"
@@ -21,11 +22,9 @@ export default function ErrorPage({ error }: { error: Error }) {
                         gap={4}
                     >
                         <Box fontSize="2xl" fontWeight="bold">
-                            {error.message}
+                            {error.name}
                         </Box>
-                        <Box fontSize="lg">
-                            Please try again later or contact support.
-                        </Box>
+                        <Box fontSize="lg">{error.message}</Box>
                     </Box>
                 </Card>
             </Box>

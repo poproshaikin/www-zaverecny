@@ -1,11 +1,6 @@
 'use client';
 
-import {
-    useMutationGet,
-    useMutationGetRes,
-    useMutationPost,
-    useQueryGet,
-} from '@/helpers/api';
+import { useMutationGet, useMutationPost, useQueryGet } from '@/helpers/api';
 import { UserLogin, UserRegister } from '@/types/db/user';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
@@ -17,22 +12,25 @@ import {
 import { useEffect, useState } from 'react';
 
 export function useLogin() {
-    return useMutationPost<UserLogin, string>('/api/auth/login');
+    return useMutationPost<string, UserLogin>('/api/auth/login');
 }
 
 export function useRegister() {
-    return useMutationPost<UserRegister, string>('/api/auth/register');
+    return useMutationPost<string, UserRegister>('/api/auth/register');
 }
 
 export function useEnsureLoggedInOrRedirect() {
     const router = useRouter();
+    const token = getTokenFromStorage();
+
     const { isLogged, isPending } = useEnsureToken();
+
     useEffect(() => {
         if (!isPending && !isLogged) {
             router.replace('/login');
         }
-    }, [isLogged, router]);
-    return { isLogged, isPending };
+    }, [isLogged, isPending, router]);
+    return { isLogged, isLoggingPending: isPending };
 }
 
 export function useEnsureToken() {
@@ -44,7 +42,7 @@ export function useEnsureToken() {
     const rqValidate = useValidateToken();
 
     useEffect(() => {
-        if (!token) {
+        if (token === null) {
             setIsLogged(false);
             setIsPending(false);
             setValidated(true);
@@ -56,7 +54,7 @@ export function useEnsureToken() {
         setIsPending(true);
         rqValidate.mutate(undefined, {
             onSuccess: (res) => {
-                if (res.ok) {
+                if (res.status === 200) {
                     setIsLogged(true);
                 } else {
                     removeToken();
@@ -76,5 +74,5 @@ export function useEnsureToken() {
 }
 
 export function useValidateToken() {
-    return useMutationGetRes('/api/auth/validate');
+    return useMutationGet('/api/auth/validate');
 }

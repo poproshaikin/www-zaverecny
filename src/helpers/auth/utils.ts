@@ -28,6 +28,7 @@ export function saveToken(token: string): void {
     if (typeof window === 'undefined') {
         return;
     }
+    console.log('saveToken', token);
     sessionStorage?.setItem('app-auth.jwt-token', token);
 }
 

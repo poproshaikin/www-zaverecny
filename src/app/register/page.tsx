@@ -23,8 +23,8 @@ export default function RegisterPage() {
 
     const onSubmit = async (data: UserRegister) => {
         await mutateAsync(data, {
-            onSuccess: async (data: string) => {
-                saveToken(data);
+            onSuccess: async (data) => {
+                saveToken(data.data);
                 toaster.create({
                     type: 'success',
                     title: 'Registration successful',

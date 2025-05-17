@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/app/api/_utils/jwt';
 import prisma from '@/db/prisma';
-import { getTokenFromRequest } from '@/app/api/_utils';
+import {
+    errorResponse,
+    getTokenFromRequest,
+    successResponse,
+} from '@/app/api/_utils';
 
 export async function GET(request: NextRequest) {
     const token = await getTokenFromRequest(request);
     if (!token) {
-        return NextResponse.json({ message: 'No JWT provided', status: 401 });
+        return await errorResponse(
+            'Failed to get user',
+            'No JWT provided',
+            400,
+        );
     }
     const payload = await verifyToken(token);
     if (!payload) {
-        return NextResponse.json({ message: 'Invalid JWT', status: 401 });
+        return await errorResponse('Failed to get user', 'Unauthorized', 401);
     }
 
     const user = await prisma.user.findFirst({
@@ -19,5 +27,5 @@ export async function GET(request: NextRequest) {
         },
     });
 
-    return NextResponse.json(user, { status: 200 });
+    return await successResponse(user, 200);
 }
