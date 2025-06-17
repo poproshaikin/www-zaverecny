@@ -9,6 +9,7 @@ import {
     VStack,
     Icon,
     Center,
+    Dialog,
 } from '@chakra-ui/react';
 import Navbar from '@/components/nav/Navbar';
 import Card from '@/components/general/Card';
@@ -78,9 +79,10 @@ export default function NewDb() {
                         <Box>
                             <Text mb={4} fontSize="lg">
                                 Enter the <strong>name</strong> of your new
-                                virtual database.
+                                virtual table.
                             </Text>
                             <InputField
+                                h="50%"
                                 placeholder="e.g. My exes "
                                 {...register('name', { required: true })}
                             />
@@ -96,6 +98,7 @@ export default function NewDb() {
                                 virtual database.
                             </Text>
                             <InputField
+                                h="50%"
                                 placeholder="e.g. qwerty123 (dont do that pls)"
                                 {...register('password', { required: true })}
                             />
@@ -106,7 +109,7 @@ export default function NewDb() {
                             )}
                         </Box>
                         <Center>
-                            <Button w="50%" onClick={handleSubmit(onSubmit)}>
+                            <Button w="30%" onClick={handleSubmit(onSubmit)}>
                                 Confirm
                             </Button>
                         </Center>

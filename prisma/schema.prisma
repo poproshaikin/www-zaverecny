@@ -23,12 +23,12 @@ model User {
 }
 
 model VirtualDb {
-  id           String   @id @default(uuid())
-  arg1         String
-  userId       String
-  password     String
-  createdAt    DateTime @default(now())
-  i_schemaName String
+  id        String   @id @default(uuid())
+  name      String
+  userId    String
+  password  String
+  createdAt DateTime @default(now())
+  i_oid     Int
 
   user User @relation(fields: [userId], references: [id])
 }

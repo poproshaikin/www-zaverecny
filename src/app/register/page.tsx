@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Icon, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import ReturnButton from '@/components/nav/ReturnButton';
 import Card from '@/components/general/Card';
@@ -30,6 +30,7 @@ export default function RegisterPage() {
                     title: 'Registration successful',
                     description: 'You have successfully registered.',
                 });
+                router.push('/dashboard');
             },
             onError: async (err) => {
                 toaster.create({
@@ -42,9 +43,9 @@ export default function RegisterPage() {
     };
 
     return (
-        <Box>
+        <Box h="full">
             <ReturnButton />
-            <Flex justify="center" align="center" px={4}>
+            <Flex h="100vh" justifyContent="center" alignItems="center" px={4}>
                 <Card w="100%" maxW="960px" h="auto">
                     <Flex direction={{ base: 'column', md: 'row' }} h="full">
                         <Flex

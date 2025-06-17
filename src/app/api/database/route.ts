@@ -3,8 +3,7 @@ import prisma from '@/db/prisma';
 import { errorResponse, getTokenFromRequest, successResponse } from '../_utils';
 import { verifyToken } from '@/app/api/_utils/jwt';
 import { CreateVirtualDb } from '@/types/db/database';
-import { createSchema } from '@/app/api/_utils/pg/schema';
-import { getSchemaName } from '@/app/api/_utils/pg/utils';
+import { createDatabase } from '@/app/api/_utils/pg/database';
 
 export async function GET(request: NextRequest) {
     const jwt = await getTokenFromRequest(request);
@@ -59,7 +58,6 @@ export async function POST(request: NextRequest) {
 
     if (
         (await prisma.virtualDb.findFirst({
-            select: {},
             where: {
                 userId: verify.userId,
                 name: body.name,
@@ -67,33 +65,39 @@ export async function POST(request: NextRequest) {
         })) !== null
     ) {
         return await errorResponse(
-            "Failed to get user's databases",
+            'Failed to create virtual database',
             'Database name is occupied',
             409,
         );
     }
 
-    const newSchemaName = await getSchemaName({
+    const dbOid = await createDatabase({
         userId: verify.userId,
         name: body.name,
     });
+    if (!dbOid) {
+        return await errorResponse(
+            'Failed to create virtual database',
+            'Internal server error. We apologize for the inconvenience.',
+            500,
+        );
+    }
+
     const virtualDb = await prisma.virtualDb.create({
         data: {
             ...body,
             userId: verify.userId,
-            i_schemaName: newSchemaName,
+            i_oid: dbOid,
         },
     });
 
     if (!virtualDb) {
         return await errorResponse(
-            "Failed to get user's databases",
-            'Failed to create database',
+            'Failed to create a virtual database',
+            'Internal server error. We apologize for the inconvenience.',
             500,
         );
     }
-
-    await createSchema(virtualDb);
 
     return await successResponse(virtualDb, 200);
 }

@@ -11,7 +11,7 @@ export default function Card({
     return (
         <Chakra.Card.Root
             bg="secondary"
-            borderRadius="xl"
+            borderRadius="2xl"
             w="350px"
             p={8}
             color="gray.900"

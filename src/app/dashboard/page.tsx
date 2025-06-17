@@ -46,18 +46,19 @@ export default function Dashboard() {
             <Navbar withHome withProfile isLogged={true} />
             <Flex justifyContent="center" height="100vh" alignItems="center">
                 <Flex h="50vh" w="50vw" mr="10vw" direction="column">
-                    <Box w="40%" mb={8} px={4}>
-                        <Heading fontSize="3xl" fontWeight="bold">
+                    <Box w="40%" mb={8}>
+                        <Heading fontSize="2xl" fontWeight="bold">
                             Your databases
                         </Heading>
-                        <Text mt={2}>
+                        <Text mt={2} fontSize="md">
                             We won't steal your data,{' '}
                             <strong>we promise</strong>.
                         </Text>
                         <Button
                             onClick={() => router.push('database/new')}
                             w="max-content"
-                            my={8}
+                            my={6}
+                            fontSize="sm"
                         >
                             <Icon as={GoPlus} boxSize={6} color="green.400" />
                             New
@@ -98,7 +99,9 @@ export default function Dashboard() {
                                     minW="15vw"
                                     w="max-content"
                                 >
-                                    <Heading>{database.name}</Heading>
+                                    <Heading fontSize="lg">
+                                        {database.name}
+                                    </Heading>
                                 </ClickableCard>
                             ))}
                         </HStack>

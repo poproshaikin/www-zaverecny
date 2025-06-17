@@ -18,3 +18,13 @@ export function useGetDatabase(dbId: string) {
 export function useCreateVirtualDb() {
     return useMutationPost<VirtualDb, CreateVirtualDb>('/api/database');
 }
+
+export function useGetDatabaseTables(dbId: string) {
+    return useQueryGet<string[]>(`/api/database/${dbId}/table`);
+}
+
+export function useCreateTable(dbId: string) {
+    return useMutationPost<string, { tableName: string }>(
+        `/api/database/${dbId}/table`,
+    );
+}

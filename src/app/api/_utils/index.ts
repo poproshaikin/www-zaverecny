@@ -40,8 +40,8 @@ export async function error(name: string, message: string, status: number) {
 
 export async function errorResponse(
     error: ApiError,
-    message: string,
-    status: number,
+    message?: string,
+    status?: number,
 ): Promise<NextResponse>;
 export async function errorResponse(
     name: string,
@@ -51,16 +51,16 @@ export async function errorResponse(
 
 export async function errorResponse(
     arg1: ApiError | string,
-    message: string,
-    status: number,
+    message?: string,
+    status?: number,
 ): Promise<NextResponse> {
     if (typeof arg1 !== 'string') {
-        return NextResponse.json(error, { status: arg1.status });
+        return NextResponse.json(arg1, { status: arg1.status });
     }
     const err: ApiError = {
         name: arg1,
-        message,
-        status,
+        message: message || 'An error occurred',
+        status: status || 500,
     };
     return NextResponse.json(err, { status });
 }
