@@ -1,6 +1,6 @@
-version: '3.8'
-
-services:
+#version: '3.8'
+#
+#services:
 #  app:
 #    container_name: next_app
 #    build:
@@ -16,24 +16,24 @@ services:
 #      - .:/app
 #      - /app/node_modules
 #    command: npm run dev
-
-  db:
-    image: postgres:17
-    networks:
-      - app
-    container_name: postgres_db
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: admin
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg:/var/lib/postgresql/data
-
-volumes:
-  pg:
-
-networks:
-  app:
-    driver: bridge
+#
+#  db:
+#    image: postgres:17
+#    networks:
+#      - app
+#    container_name: postgres_db
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: admin
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pg:/var/lib/postgresql/data
+#
+#volumes:
+#  pg:
+#
+#networks:
+#  app:
+#    driver: bridge

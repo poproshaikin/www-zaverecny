@@ -21,7 +21,7 @@ services:
     container_name: stas_zaverecny_db
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_PASSWORD: 15112006stas
       POSTGRES_DB: admin
     volumes:
       - /home/stasik/volumes/zaverecny/pg:/var/lib/postgresql/data
